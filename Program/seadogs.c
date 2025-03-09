@@ -40,6 +40,8 @@
 #include "controls\controls_func.c" // belamour процессирование контролок 
 #include "migrations.c"
 #include "achievements.c"
+#include "ships/ships_generator.c"
+
 
 extern void InitBaseCannons();
 extern void InitCharacters();

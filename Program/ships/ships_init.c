@@ -113,6 +113,7 @@ void InitShips()
 	refShip.HP										= 100;
 	refShip.SP										= 100;
 	refship.CanEncounter							= false;
+	refship.ShipHolder					            = true; 
 	refship.Type.Merchant							= false;
 	refship.Type.War								= false;
 	refShip.lowpolycrew 							= 0;
@@ -1989,6 +1990,7 @@ void InitShips()
 	
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
+	refShip.CanEncounter				= false;
 	
 	refShip.lowpolycrew 				= 24;
 	refship.Rocking.y 					= 0.5;
@@ -2063,6 +2065,7 @@ void InitShips()
 	refShip.SP              			= 100;
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
+	refShip.CanEncounter				= false;
 	
 	refShip.lowpolycrew 				= 24;
 	refship.Rocking.y 					= 0.5;
@@ -2137,6 +2140,7 @@ void InitShips()
 	refShip.SP              			= 100;
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
+	refShip.CanEncounter				= false;
 	refShip.lowpolycrew 				= 28;
 
 	refship.Rocking.y 					= 0.3;
@@ -2210,6 +2214,7 @@ void InitShips()
 	refShip.SP              			= 100;
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
+	refShip.CanEncounter				= false;
 	refShip.lowpolycrew 				= 28;
 
 	refship.Rocking.y 					= 0.3;
@@ -3041,7 +3046,6 @@ void InitShips()
 	refship.SubSeaDependWeight			= 0.6;
 	refship.TurnDependWeight			= 0.3;
 	refship.WindAgainstSpeed   			= 1.20;
-	
 	refship.CabinType          			= "Cabin_Medium"; 
 
 	refship.InertiaAccelerationX	= 5.5;	refship.InertiaBrakingX		= 5.5;
@@ -3101,7 +3105,7 @@ void InitShips()
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
 	refship.QuestShip					= true;
-	
+	refship.ShipHolder					= true; 
 	refShip.lowpolycrew					= 12;
 
 	refship.WindAgainstSpeed   			= 1.35;
@@ -3170,7 +3174,8 @@ void InitShips()
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
 	refShip.lowpolycrew 				= 16;
-
+	refship.QuestShip					= true; 
+	refship.ShipHolder					= true; 
 	refship.Rocking.y 					= 0.8;
 	refship.Rocking.az 					= 0.025;
 	
@@ -3243,7 +3248,7 @@ void InitShips()
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
 	refship.QuestShip					= true; 
-
+	refship.ShipHolder					= true; 
 	refShip.lowpolycrew 				= 20;
 	
 	refship.Rocking.y 					= 0.4;
@@ -3326,7 +3331,8 @@ void InitShips()
 	refship.WindAgainstSpeed   			= 0.45;
 	refship.CabinType          			= "Cabin"; // boal 28.03.05
 	refship.DeckType           			= "Big";
-		
+	refship.QuestShip					= true; 
+	refship.ShipHolder					= true; 
 	refship.InertiaAccelerationX	= 5.0;	refship.InertiaBrakingX		= 5.0;
 	refship.InertiaAccelerationY	= 4;	refship.InertiaBrakingY		= 4;
 	refship.InertiaAccelerationZ	= 5.0;	refship.InertiaBrakingZ		= 5.0;
@@ -3387,7 +3393,8 @@ void InitShips()
 	refShip.SP              			= 100;
 	refship.Type.Merchant				= false;
 	refship.Type.War					= true;
-	
+	refship.QuestShip					= true; 
+	refship.ShipHolder					= true; 
 	refShip.lowpolycrew 				= 24;
 
 	refship.Rocking.y 					= 0.5;
@@ -3748,7 +3755,10 @@ void InitShips()
 	refShip.HP									= 54000;
 	refShip.SP									= 100;
 	refShip.CanEncounter						= false;
-
+	refship.ShipHolder					        = true; 
+	
+	makeref(refShip,ShipsTypes[SHIP_FORT + 1]);
+	refShip.ShipHolder  = true;
 	/// Check
 	for (int i=0; i<SHIP_TYPES_QUANTITY_WITH_FORT-1; i++)
 	{
