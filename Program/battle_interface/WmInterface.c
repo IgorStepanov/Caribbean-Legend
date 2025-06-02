@@ -240,13 +240,6 @@ void WM_InitializeCommands()
 {
 	int idLngFile = LanguageOpenFile("commands_name.txt");
 
-	BattleInterface.Commands.Cancel.enable				= false;
-	BattleInterface.Commands.Cancel.picNum				= 1;
-	BattleInterface.Commands.Cancel.selPicNum			= 0;
-	BattleInterface.Commands.Cancel.texNum				= 0;
-	BattleInterface.Commands.Cancel.event				= "Cancel";
-	BattleInterface.Commands.Cancel.note				= LanguageConvertString(idLngFile, "sea_Cancel");
-
 	BattleInterface.Commands.EnterToSea.enable			= false;
  	BattleInterface.Commands.EnterToSea.picNum			= 1;
 	BattleInterface.Commands.EnterToSea.selPicNum		= 9;
@@ -288,6 +281,13 @@ void WM_InitializeCommands()
 	BattleInterface.Commands.EnterToEnemy.texNum		= 1;
 	BattleInterface.Commands.EnterToEnemy.event			= "EnterToEnemy";
 	BattleInterface.Commands.EnterToEnemy.note			= LanguageConvertString(idLngFile, "worldmap_toenemy");
+
+	BattleInterface.Commands.Cancel.enable				= false;
+	BattleInterface.Commands.Cancel.picNum				= 1;
+	BattleInterface.Commands.Cancel.selPicNum			= 0;
+	BattleInterface.Commands.Cancel.texNum				= 0;
+	BattleInterface.Commands.Cancel.event				= "Cancel";
+	BattleInterface.Commands.Cancel.note				= LanguageConvertString(idLngFile, "sea_Cancel");
 
 	LanguageCloseFile(idLngFile);
 
@@ -415,6 +415,17 @@ void WM_SetParameterData()
 	BattleInterface.CommandList.UDArrow_Offset_Down = RecalculateHIcon(makeint(-30 * fHtRatio)) + "," + RecalculateVIcon(makeint(45 * fHtRatio));
 
 	BattleInterface.maincharindex = pchar.index;
+	
+/*	aref arImage;
+	makearef(arImage, BattleInterface.wm_dynamic.images.backtexture);
+	arImage.group   = "TUTORIAL_BACK";
+    arImage.picture = "background";
+	int x1, y1, x2, y2;
+	x1 = sti(showWindow.right) / 2 - 200;
+	x2 = sti(showWindow.right) / 2 + 200;
+	y1 = sti(showWindow.top) + 50;
+	y2 = sti(showWindow.top) + 250;
+	arImage.pos = x1 + "," + y1 + "," + x2 + "," + y2;	*/
 
 	WM_SetShipData();
 }
@@ -440,6 +451,15 @@ void WM_SetShipData()
 			BattleInterface.wm_sign.(signattr).faceuv = uvleft+","+uvtop + "," + uvright+","+uvbottom;
 			BattleInterface.wm_sign.(signattr).text = GetCrewQuantity(&Characters[cn]);
 			BattleInterface.wm_sign.(signattr).shipname = Characters[cn].Ship.Name;
+			
+			ref refShip;
+			makeref(refShip, ShipsTypes[sti(RealShips[sti(characters[cn].Ship.Type)].basetype)]);
+			if (CheckAttribute(refShip, "modname"))
+			{
+				string largeFilePath = "interfaces\le\battle_interface\mods\"+refShip.modname+"\ship_icons2.tga.tx";
+				BattleInterface.wm_sign.(signattr).texturePath = largeFilePath;
+			}
+			
 			i++;
 		}
 	}

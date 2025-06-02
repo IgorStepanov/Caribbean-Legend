@@ -66,8 +66,10 @@ void SetSpyGlassData()
 	
 	ref chref = GetCharacter(chrIdx);
 
-	if( Items_FindItem( GetCharacterEquipByGroup(pchar,SPYGLASS_ITEM_TYPE), &arScopeItm)<0 )
-		{	makearef(arScopeItm,tmpobj);	}
+	if(Items_FindItem( GetCharacterEquipByGroup(pchar,SPYGLASS_ITEM_TYPE), &arScopeItm) < 0)
+    {
+        makearef(arScopeItm,tmpobj);
+    }
 
 	if(!CheckAttribute(arScopeItm, "scope.show.nation") || sti(arScopeItm.scope.show.nation)!= 0)
 	{
@@ -190,6 +192,15 @@ void SetSpyGlassData()
 				GetTextureUVForShip(iShip, &uvLeft, &uvTop, &uvRight, &uvBottom);
 
 				shipClass = GetCharacterShipClass(chref);
+	
+	
+				ref refShip;
+				makeref(refShip, ShipsTypes[sti(RealShips[sti(chref.Ship.Type)].basetype)]);
+				if (CheckAttribute(refShip, "modname"))
+				{
+					string largeFilePath = "interfaces\le\battle_interface\mods\"+refShip.modname+"\ship_icons2.tga.tx";
+					sTextureName = largeFilePath;
+				}
 	
 				if (CheckAttribute(arScopeItm,"scope.show.cannons") && sti(arScopeItm.scope.show.cannons)!=0 )
 				{
@@ -431,6 +442,8 @@ void FillISpyGlassParameters()
 
 	//==========================================================
 	float fRes = 0.85; // для ресайза
+	
+	
 	objISpyGlass.shipsign.ship.texture = "interfaces\le\battle_interface\ship_icons2.tga";//
 	fTmp = nleft + fOffX + makeint(fSizeX * fHtRatio) - makeint(fSizeX * fRes * fHtRatio);
 	fTmp2 = ntop + fOffY + makeint(fSizeY * fHtRatio) - makeint(fSizeY * fRes * fHtRatio);

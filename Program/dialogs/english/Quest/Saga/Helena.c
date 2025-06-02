@@ -603,7 +603,7 @@ void ProcessDialogEvent()
 				break;
 			}
 			SaveCurrentNpcQuestDateParam(npchar, "sex_date");
-			if (drand(4) == 0)// вероятность отказа 20%
+			if (hrand(4) == 0)// вероятность отказа 20%
 			{
 				dialog.text = RandPhraseSimple(""+pchar.name+", I am not feeling well today. Don't feel bad, please, it's not your fault. Let's not do it today...",""+pchar.name+", dear, I have been so tired for the last few days. To be honest, I only want to sleep. Forgive me. Let's do it another time.");
 				link.l1 = RandPhraseSimple("Fine...","That's alright. As you wish...");
@@ -614,7 +614,6 @@ void ProcessDialogEvent()
 				dialog.text = RandPhraseSimple(""+pchar.name+", the mood is just right, let's go!",""+pchar.name+", sure, no questions asked! Let's go!");
 				link.l1 = RandPhraseSimple("That's my girl...","You are so lovely, Helen...");
 				link.l1.go = "exit";
-				pchar.quest.sex_partner = Npchar.id;
 				AddDialogExitQuest("cabin_sex_go");
 			}
 		break;
@@ -642,7 +641,7 @@ void ProcessDialogEvent()
 				break;
 			}
 			SaveCurrentNpcQuestDateParam(npchar, "sex_date");
-			if (drand(4) == 0) // вероятность отказа 20%
+			if (hrand(4) == 0) // вероятность отказа 20%
 			{
 				dialog.text = RandPhraseSimple(""+pchar.name+", I am not feeling well today. Don't feel hurt, please. Let's not do it today...",""+pchar.name+", dear, I have been so tired for the last few days. To be honest, I only want to sleep. Forgive me. Let's do it another time.");
 				link.l1 = RandPhraseSimple("Fine...","That's alright. As you wish...");
@@ -658,7 +657,6 @@ void ProcessDialogEvent()
 		
 		case "room_sex_go":
 			DialogExit();
-			pchar.quest.sex_partner = Npchar.id;
 			chrDisableReloadToLocation = true;
 			//npchar.quest.daily_sex_room = true; // для первого раза в таверне чтобы счетчик запустить . лесник
 			//npchar.quest.daily_sex_cabin = true;
@@ -2356,7 +2354,7 @@ void ProcessDialogEvent()
 		break;
 		
 		case "drinking_game_accept_16":
-			dialog.text = "ЧThat I have the misfortune of living in an all-male crew, and I have to behave carefully. I am an honest girl.";
+			dialog.text = "That I have the misfortune of living in an all-male crew, and I have to behave carefully. I am an honest girl.";
 			link.l1 = "I'm h-happy for you, H-Helen.";
 			link.l1.go = "drinking_game_accept_17";
 		break;

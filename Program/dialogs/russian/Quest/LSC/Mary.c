@@ -20,6 +20,13 @@ void ProcessDialogEvent()
 	 	NPChar.SetGunBullets = strcut(sAttr, i + 1, strlen(sAttr) - 1); // индекс в конце
  	    Dialog.CurrentNode = "SetGunBullets2";
  	}
+
+	if (findsubstr(sAttr, "SetMusketBullets1_" , 0) != -1)
+ 	{
+        i = findsubstr(sAttr, "_" , 0);
+	 	NPChar.SetMusketBullets = strcut(sAttr, i + 1, strlen(sAttr) - 1); // индекс в конце
+ 	    Dialog.CurrentNode = "SetMusketBullets2";
+ 	}
 	
 	switch(Dialog.CurrentNode)
 	{
@@ -2682,6 +2689,7 @@ void ProcessDialogEvent()
 
 		//--> ----------------------------------- офицерский блок ------------------------------------------
 		case "Mary_officer":
+			npchar.CanTakeMushket = true;
 			// если шлялся по борделям - устроит небольшой скандал 
 			if (sti(pchar.GenQuest.BrothelCount) >= 3 && LAi_grp_playeralarm == 0)
 			{
@@ -2750,15 +2758,26 @@ void ProcessDialogEvent()
             Link.l1.go = "Boal_Stay";
             Link.l2 = "Следуй за мной и не отставай!";
             Link.l2.go = "Boal_Follow";
-			sGun = GetCharacterEquipByGroup(NPChar, GUN_ITEM_TYPE);
-			if(sGun != "")
+			if(CheckAttribute(NPChar, "equip.gun"))
 			{
-				rItm = ItemsFromID(sGun);
 				if(CheckAttribute(NPChar, "chr_ai.gun.bulletNum") && sti(NPChar.chr_ai.gun.bulletNum) > 1)
 				{
-					Link.l3 = "Нужно изменить тип боеприпаса для твоего огнестрельного оружия.";
+					Link.l3 = "Нужно изменить тип боеприпаса для твоего пистолета.";
 					Link.l3.go = "SetGunBullets";
 				}	
+			}
+			
+			if(CheckAttribute(NPChar, "equip.musket"))
+			{
+				if(CheckAttribute(NPChar, "chr_ai.musket.bulletNum") && sti(NPChar.chr_ai.musket.bulletNum) > 1)
+				{
+					Link.l4 = "Нужно изменить тип боеприпаса для твоего мушкета.";
+					Link.l4.go = "SetMusketBullets";
+				}
+					Link.l5 = "Нужно изменить тип твоего приоритетного оружия для боя.";
+					Link.l5.go = "SetPriorityMode";
+					Link.l6 = "Я хочу, чтобы ты держалась на определённом расстоянии от цели.";
+					Link.l6.go = "TargetDistance";
 			}		
 		break;
 		
@@ -2791,7 +2810,100 @@ void ProcessDialogEvent()
 			notification(GetFullName(NPChar)+" "+XI_ConvertString("AmmoSelectNotif")+GetConvertStr(rItem.name, "ItemsDescribe.txt")+"", "AmmoSelect");
 			DeleteAttribute(NPChar,"SetGunBullets");
 			DialogExit();
-		break;		
+		break;
+
+		case "SetMusketBullets":
+			Dialog.Text = "Выбор типа боеприпаса:";
+			sGun = GetCharacterEquipByGroup(NPChar, MUSKET_ITEM_TYPE);
+			rItm = ItemsFromID(sGun);
+			makearef(rType, rItm.type);	
+			for (i = 0; i < sti(NPChar.chr_ai.musket.bulletNum); i++)
+			{
+				sAttr = GetAttributeName(GetAttributeN(rType, i));
+				sBullet = rItm.type.(sAttr).bullet;
+				rItem = ItemsFromID(sBullet);								
+				attrL = "l" + i;
+				Link.(attrL) = GetConvertStr(rItem.name, "ItemsDescribe.txt");;
+				Link.(attrL).go = "SetMusketBullets1_" + i;
+			}
+		break;
+		
+		case "SetMusketBullets2":
+			i = sti(NPChar.SetMusketBullets) + 1; 
+			sGun = GetCharacterEquipByGroup(NPChar, MUSKET_ITEM_TYPE);
+			rItm = ItemsFromID(sGun);
+			sAttr = "t" + i;
+			sBullet = rItm.type.(sAttr).bullet;
+			if(LAi_SetCharacterUseBullet(NPChar, MUSKET_ITEM_TYPE, sBullet))
+			{
+				rItem = ItemsFromID(sBullet);
+				notification(GetFullName(NPChar)+" "+XI_ConvertString("AmmoSelectNotif")+GetConvertStr(rItem.name, "ItemsDescribe.txt")+"", "AmmoSelect");
+			}
+			LAi_GunSetUnload(NPChar, MUSKET_ITEM_TYPE);
+			NextDiag.CurrentNode = NextDiag.TempNode;
+			DeleteAttribute(NPChar,"SetMusketBullets");
+			DialogExit();
+		break;
+		
+		case "SetPriorityMode":
+			Dialog.Text = "В начале боя я буду доставать:";
+			Link.l1 = "Холодное оружие";
+			Link.l1.go = "BladePriorityMode";
+			Link.l2 = "Мушкет";
+			Link.l2.go = "MusketPriorityMode";
+		break;
+		
+		case "BladePriorityMode":
+			//NPChar.PriorityMode = 1;
+			//UpdateWithPriorityMode(NPChar);
+			SetPriorityMode(NPChar, 1);
+			DialogExit();
+		break;
+		
+		case "MusketPriorityMode":
+			//NPChar.PriorityMode = 2;
+			//UpdateWithPriorityMode(NPChar);
+            SetPriorityMode(NPChar, 2);
+			DialogExit();
+		break;	
+
+		case "TargetDistance":
+			dialog.text = "На какой именно, капитан? Но учти, дальше двадцати ярдов я не смогу попасть.";
+			link.l1 = "";
+			Link.l1.edit = 3;
+			link.l1.go = "TargetDistance_1";			
+		break;
+		
+		case "TargetDistance_1":
+			iTemp = sti(dialogEditStrings[3]);
+			if (iTemp < 0)
+			{
+				dialog.text = "Мой капитан, я тебя не понимаю.";
+				link.l1 = "Извини, ошибочка вышла...";
+				link.l1.go = "exit";
+				break;
+			}
+			if (iTemp == 0)
+			{
+				dialog.text = "Я буду стоять на месте, никуда не двигаться. Ты хочешь этого, капитан?";
+				link.l1 = "Да, именно это от тебя и требуется.";
+				link.l1.go = "exit";
+				npchar.MusketerDistance = 0;
+				break;
+			}
+			if (iTemp > 20)
+			{
+				dialog.text = "Я не могу встать дальше двадцати ярдов от цели. Тогда я промахнусь.";
+				link.l1 = "Хорошо, тогда держись на расстоянии в двадцать ярдов.";
+				link.l1.go = "exit";
+				npchar.MusketerDistance = 20.0;
+				break;
+			}
+			dialog.text = "Я тебя поняла.";
+			link.l1 = "Хорошо.";
+			link.l1.go = "exit";
+			npchar.MusketerDistance = iTemp;
+		break;			
 		
         case "Boal_Stay":
             Pchar.questTemp.HiringOfficerIDX = GetCharacterIndex(Npchar.id);

@@ -602,7 +602,7 @@ void ProcessDialogEvent()
 				break;
 			}
 			SaveCurrentNpcQuestDateParam(npchar, "sex_date");
-			if (drand(4) == 0)// вероятность отказа 20%
+			if (hrand(4) == 0)// вероятность отказа 20%
 			{
 				dialog.text = RandPhraseSimple(""+pchar.name+", я себя что-то совсем неважно чувствую. Не обижайся, пожалуйста. Давай не сегодня...",""+pchar.name+", дорогой, я так устала за последние несколько дней. Честно говоря, мне хочется просто поспать. Не обижайся. Давай в другой раз.");
 				link.l1 = RandPhraseSimple("Ну хорошо...","Не обижаюсь. Как скажешь...");
@@ -613,7 +613,6 @@ void ProcessDialogEvent()
 				dialog.text = RandPhraseSimple(""+pchar.name+", я с радостью поддерживаю твоё предложение! Идём!",""+pchar.name+", ну конечно же не возражаю! Идём!");
 				link.l1 = RandPhraseSimple("Ты моя умничка...","Ты - просто прелесть, Элен...");
 				link.l1.go = "exit";
-				pchar.quest.sex_partner = Npchar.id;
 				AddDialogExitQuest("cabin_sex_go");
 			}
 		break;
@@ -641,7 +640,7 @@ void ProcessDialogEvent()
 				break;
 			}
 			SaveCurrentNpcQuestDateParam(npchar, "sex_date");
-			if (drand(4) == 0) // вероятность отказа 20%
+			if (hrand(4) == 0) // вероятность отказа 20%
 			{
 				dialog.text = RandPhraseSimple(""+pchar.name+", я себя что-то совсем неважно чувствую. Не обижайся, пожалуйста. Давай не сегодня...",""+pchar.name+", дорогой, я так устала за последние несколько дней. Честно говоря, мне хочется просто поспать. Не обижайся. Давай в другой раз.");
 				link.l1 = RandPhraseSimple("Ну хорошо...","Не обижаюсь. Как скажешь...");
@@ -657,7 +656,6 @@ void ProcessDialogEvent()
 		
 		case "room_sex_go":
 			DialogExit();
-			pchar.quest.sex_partner = Npchar.id;
 			chrDisableReloadToLocation = true;
 			//npchar.quest.daily_sex_room = true; // для первого раза в таверне чтобы счетчик запустить . лесник
 			//npchar.quest.daily_sex_cabin = true;
@@ -3038,7 +3036,7 @@ void ProcessDialogEvent()
 		break;
 		
 		case "shdn_ambush_8":
-			dialog.text = "Потом, Шарль. Давай уходить отсюда, пока они от шока не отошли. Меня тоже всю трясет. Поговорим в Блювельде?";
+			dialog.text = "Потом, Шарль. Давай уходить отсюда, пока они от шока не отошли. Меня тоже всю трясёт. Поговорим в Блювельде?";
 			link.l1 = "Договорились.";
 			link.l1.go = "exit";
 			CharacterTurnByChr(npchar, pchar);
@@ -3086,7 +3084,7 @@ void ProcessDialogEvent()
 		
 		case "after_cave_notduel":
 			dialog.text = "Тьфу ты! Я просто хотела сказать, что горжусь нами. Ты проявил настоящее мужество сегодня, мой капитан. Не поддался на истерику подчинённых, которые просто хотели в кои-то веки тобой покомандовать. Устоял перед фальшью красного мундира и одержимостью синего. Полковник явно искал смерти, но получил только ранение в неподобающее место, ха-ха!";
-			link.l1 = "Спасибо, Элен. Ты превосходно вывела нас из под удара - как настоящий морской офицер. Гордишься собой?";
+			link.l1 = "Спасибо, Элен. Ты превосходно вывела нас из-под удара - как настоящий морской офицер. Гордишься собой?";
 			link.l1.go = "after_cave_notduel_1";
 		break;
 		
